@@ -66,34 +66,99 @@ const todoDeleteReactions = [
     "A desistência é o único hábito que você mantém de forma consistente."
 ];
 
-// Banco de dados para desculpas corporativas
-const excuseSubjects = [
-    "O escopo da entrega",
-    "O alinhamento sinérgico do roadmap",
-    "O desvio conceitual nas diretrizes do projeto",
-    "A sprint atual de desenvolvimento",
-    "A validação dos KPIs estratégicos",
-    "A integração de ponta a ponta da API",
-    "O deploy no ambiente de staging"
-];
-
-const excuseVerbs = [
-    "sofreu um impacto severo devido a",
-    "foi despriorizado temporariamente por conta de",
-    "precisa ser reavaliado holisticamente após",
-    "entrou em estado de mitigação por causa de",
-    "sofreu um gargalo operacional decorrente de",
-    "teve o cronograma postergado em virtude de"
-];
-
-const excuseCauses = [
-    "gargalos de comunicação interdepartamentais e silos de informação.",
-    "uma repriorização macro-estratégica por parte dos principais stakeholders.",
-    "inconsistências na arquitetura legada e débitos técnicos acumulados.",
-    "alocações inesperadas de recursos em demandas críticas de sustentação prioritária.",
-    "alinhamentos de governança que necessitam de dupla validação do C-level.",
-    "uma disrupção sistêmica na infraestrutura de cloud sob demanda."
-];
+// Banco de dados de desculpas categorizado
+const excuseDatabases = {
+    corporativo: {
+        subjects: [
+            "O escopo da entrega",
+            "O alinhamento sinérgico do roadmap",
+            "O desvio conceitual nas diretrizes do projeto",
+            "A sprint atual de desenvolvimento",
+            "A validação dos KPIs estratégicos",
+            "A integração de ponta a ponta da API",
+            "O deploy no ambiente de staging"
+        ],
+        verbs: [
+            "sofreu um impacto severo devido a",
+            "foi despriorizado temporariamente por conta de",
+            "precisa ser reavaliado holisticamente após",
+            "entrou em estado de mitigação por causa de",
+            "sofreu um gargalo operacional decorrente de",
+            "teve o cronograma postergado em virtude de"
+        ],
+        causes: [
+            "gargalos de comunicação interdepartamentais e silos de informação.",
+            "uma repriorização macro-estratégica por parte dos principais stakeholders.",
+            "inconsistências na arquitetura legada e débitos técnicos acumulados.",
+            "alocações inesperadas de recursos em demandas críticas de sustentação prioritária.",
+            "alinhamentos de governança que necessitam de dupla validação do C-level.",
+            "uma disrupção sistêmica na infraestrutura de cloud sob demanda."
+        ]
+    },
+    academico: {
+        subjects: [
+            "O progresso do TCC",
+            "A escrita do artigo científico",
+            "A revisão bibliográfica do projeto",
+            "O relatório final de estágio",
+            "O estudo para a prova final"
+        ],
+        verbs: [
+            "foi severamente comprometido devido a",
+            "teve o cronograma paralisado por conta de",
+            "precisa ser completamente revisado após",
+            "sofreu uma estagnação crítica decorrente de"
+        ],
+        causes: [
+            "uma ausência prolongada de respostas do orientador.",
+            "um bloqueio criativo severo desencadeado pelo excesso de café.",
+            "instabilidades inexplicáveis no sistema de submissão acadêmica.",
+            "uma crise de impostor que me fez questionar a validade da ciência."
+        ]
+    },
+    saude: {
+        subjects: [
+            "O treino de pernas planejado",
+            "A dieta com déficit calórico rigoroso",
+            "A meta de ingestão de 3L de água",
+            "O plano de dormir 8 horas por noite",
+            "O cardio matinal em jejum"
+        ],
+        verbs: [
+            "foi sumariamente cancelado por conta de",
+            "sofreu um desvio ético grave motivado por",
+            "teve sua execução arruinada em virtude de",
+            "entrou em estado de suspensão temporária após"
+        ],
+        causes: [
+            "uma dor tardia insuportável no músculo da preguiça.",
+            "a tentação divina de uma pizza com borda de catupiry.",
+            "uma chuva fina lá fora que traria risco iminente de pneumonia.",
+            "uma maratona não planejada de séries que durou até a madrugada."
+        ]
+    },
+    relacionamento: {
+        subjects: [
+            "O encontro romântico agendado",
+            "A conversa séria para alinhar o futuro",
+            "O plano de responder mensagens rapidamente",
+            "A surpresa de aniversário planejada",
+            "O final de semana romântico"
+        ],
+        verbs: [
+            "foi inviabilizado de última hora por conta de",
+            "teve o clima totalmente arruinado após",
+            "foi adiado por tempo indeterminado em virtude de",
+            "sofreu um distanciamento estratégico provocado por"
+        ],
+        causes: [
+            "minha bateria social ter zerado e eu preferir jogar videogame.",
+            "um mal-entendido colossal envolvendo uma figurinha sem contexto.",
+            "uma crise existencial repentina sobre a efemeridade do amor.",
+            "um episódio severo de sono acumulado que me impediu de raciocinar."
+        ]
+    }
+};
 
 // Elementos DOM
 const quoteDisplay = document.getElementById('quote-display');
@@ -214,12 +279,49 @@ if (localStorage.getItem('abismo_tasks')) {
     }
 }
 
+// Carrega estatísticas do LocalStorage
+let stats = {
+    created: parseInt(localStorage.getItem('abismo_stats_created')) || 0,
+    completed: parseInt(localStorage.getItem('abismo_stats_completed')) || 0,
+    deleted: parseInt(localStorage.getItem('abismo_stats_deleted')) || 0
+};
+
 function saveTasks() {
     localStorage.setItem('abismo_tasks', JSON.stringify(tasks));
 }
 
+function saveStats() {
+    localStorage.setItem('abismo_stats_created', stats.created);
+    localStorage.setItem('abismo_stats_completed', stats.completed);
+    localStorage.setItem('abismo_stats_deleted', stats.deleted);
+}
+
+function updateStatsUI() {
+    document.getElementById('stats-created').textContent = stats.created;
+    document.getElementById('stats-completed').textContent = stats.completed;
+    document.getElementById('stats-deleted').textContent = stats.deleted;
+}
+
 function updateTodoMessage(text) {
     todoMessage.textContent = text;
+}
+
+function getRelativeTime(timestamp) {
+    const diffMs = Date.now() - timestamp;
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHr = Math.floor(diffMin / 60);
+    const diffDays = Math.floor(diffHr / 24);
+
+    if (diffSec < 60) {
+        return "criada agora (desista logo)";
+    } else if (diffMin < 60) {
+        return `há ${diffMin}m (procrastinando)`;
+    } else if (diffHr < 24) {
+        return `há ${diffHr}h (apodrecendo)`;
+    } else {
+        return `há ${diffDays}d (já virou fóssil)`;
+    }
 }
 
 function renderTasks() {
@@ -231,11 +333,20 @@ function renderTasks() {
     }
 
     tasks.forEach((task, index) => {
+        if (!task.createdAt) {
+            task.createdAt = Date.now() - 3600000; // Retroativo de 1 hora
+        }
+
+        const elapsedText = getRelativeTime(task.createdAt);
+
         const li = document.createElement('li');
         li.className = `todo-item ${task.completed ? 'completed' : ''}`;
         
         li.innerHTML = `
-            <span class="todo-text">${escapeHTML(task.text)}</span>
+            <div class="todo-content">
+                <span class="todo-text">${escapeHTML(task.text)}</span>
+                <span class="todo-time">${elapsedText}</span>
+            </div>
             <div class="todo-actions">
                 <button class="btn-todo-check" title="${task.completed ? 'Desmarcar' : 'Concluir'}">
                     ${task.completed ? '↩️' : '✓'}
@@ -247,6 +358,11 @@ function renderTasks() {
         // Evento Concluir/Desmarcar
         li.querySelector('.btn-todo-check').addEventListener('click', () => {
             tasks[index].completed = !tasks[index].completed;
+            if (tasks[index].completed) {
+                stats.completed++;
+                saveStats();
+                updateStatsUI();
+            }
             saveTasks();
             renderTasks();
             
@@ -258,11 +374,18 @@ function renderTasks() {
 
         // Evento Deletar
         li.querySelector('.btn-todo-del').addEventListener('click', () => {
-            tasks.splice(index, 1);
-            saveTasks();
-            renderTasks();
-            const randomReact = todoDeleteReactions[Math.floor(Math.random() * todoDeleteReactions.length)];
-            updateTodoMessage(randomReact);
+            li.classList.add('decay-out'); // Animação de desintegração
+            stats.deleted++;
+            saveStats();
+            updateStatsUI();
+
+            li.addEventListener('animationend', () => {
+                tasks.splice(index, 1);
+                saveTasks();
+                renderTasks();
+                const randomReact = todoDeleteReactions[Math.floor(Math.random() * todoDeleteReactions.length)];
+                updateTodoMessage(randomReact);
+            });
         });
 
         todoList.appendChild(li);
@@ -282,7 +405,10 @@ btnTodoAdd.addEventListener('click', () => {
         return;
     }
     
-    tasks.push({ text: text, completed: false });
+    tasks.push({ text: text, completed: false, createdAt: Date.now() });
+    stats.created++;
+    saveStats();
+    updateStatsUI();
     saveTasks();
     todoInput.value = '';
     renderTasks();
@@ -297,14 +423,27 @@ todoInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Inicializa a lista de tarefas
+// Inicializa a lista de tarefas e estatísticas
 renderTasks();
+updateStatsUI();
 
-// ---- GERADOR DE DESCULPAS CORPORATIVAS ----
+// ---- GERADOR DE DESCULPAS CATEGORIZADO ----
+let activeCategory = 'corporativo';
+
+document.querySelectorAll('.btn-category').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-category');
+        generateExcuse();
+    });
+});
+
 function generateExcuse() {
-    const subject = excuseSubjects[Math.floor(Math.random() * excuseSubjects.length)];
-    const verb = excuseVerbs[Math.floor(Math.random() * excuseVerbs.length)];
-    const cause = excuseCauses[Math.floor(Math.random() * excuseCauses.length)];
+    const db = excuseDatabases[activeCategory];
+    const subject = db.subjects[Math.floor(Math.random() * db.subjects.length)];
+    const verb = db.verbs[Math.floor(Math.random() * db.verbs.length)];
+    const cause = db.causes[Math.floor(Math.random() * db.causes.length)];
     
     const excuse = `${subject} ${verb} ${cause}`;
     excuseDisplay.textContent = excuse;
@@ -327,3 +466,104 @@ btnExcuseCopy.addEventListener('click', () => {
         console.error('Falha ao copiar texto: ', err);
     });
 });
+
+// ---- CALCULADORA PRESETS ----
+document.querySelectorAll('.btn-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.getElementById('hours').value = btn.getAttribute('data-hours');
+        document.getElementById('days').value = btn.getAttribute('data-days');
+        document.getElementById('years').value = btn.getAttribute('data-years');
+        btnCalc.click();
+    });
+});
+
+// ---- SOCIAL SHARING ----
+const btnShareQuoteTw = document.getElementById('btn-share-quote-tw');
+const btnShareQuoteWa = document.getElementById('btn-share-quote-wa');
+const btnShareExcuseTw = document.getElementById('btn-share-excuse-tw');
+const btnShareExcuseWa = document.getElementById('btn-share-excuse-wa');
+
+btnShareQuoteTw.addEventListener('click', () => {
+    const text = quoteDisplay.textContent.trim();
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text + " #EfeitoGyro #Abismo")}`;
+    window.open(url, '_blank');
+});
+
+btnShareQuoteWa.addEventListener('click', () => {
+    const text = quoteDisplay.textContent.trim();
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + " - Efeito Gyro: " + window.location.href)}`;
+    window.open(url, '_blank');
+});
+
+btnShareExcuseTw.addEventListener('click', () => {
+    const text = excuseDisplay.textContent.trim();
+    if (text.includes("Selecione gerar álibi")) return;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent('Meu álibi de hoje: ' + text + ' #EfeitoGyro')}`;
+    window.open(url, '_blank');
+});
+
+btnShareExcuseWa.addEventListener('click', () => {
+    const text = excuseDisplay.textContent.trim();
+    if (text.includes("Selecione gerar álibi")) return;
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent('Meu álibi de hoje: ' + text + ' - Efeito Gyro')}`;
+    window.open(url, '_blank');
+});
+
+// ---- EFEITO DE PARTÍCULAS DE FUNDO (CANVAS DE DECADÊNCIA) ----
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor() {
+        this.reset(true);
+    }
+    reset(initial = false) {
+        this.x = Math.random() * canvas.width;
+        this.y = initial ? Math.random() * canvas.height : -10;
+        this.size = Math.random() * 1.8 + 0.4;
+        this.speedY = Math.random() * 0.4 + 0.1;
+        this.speedX = (Math.random() - 0.5) * 0.15;
+        this.alpha = Math.random() * 0.4 + 0.08;
+    }
+    update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+            this.reset(false);
+        }
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(142, 142, 168, ${this.alpha})`;
+        ctx.fill();
+    }
+}
+
+function initParticles() {
+    particles = [];
+    const count = Math.min(50, Math.floor(window.innerWidth / 25));
+    for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+    }
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();

@@ -38,6 +38,16 @@ body {
         radial-gradient(circle at 90% 80%, rgba(255, 136, 0, 0.03) 0%, transparent 40%);
 }
 
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
 .container {
     max-width: 1000px;
     width: 100%;
@@ -102,8 +112,10 @@ header p {
 }
 
 .module {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
+    background-color: rgba(12, 12, 18, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 12px;
     padding: 25px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -115,9 +127,9 @@ header p {
 }
 
 .module:hover {
-    border-color: var(--border-hover);
+    border-color: rgba(255, 255, 255, 0.12);
     transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 51, 68, 0.03);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 51, 68, 0.04);
 }
 
 .module::before {
@@ -473,7 +485,189 @@ button:active {
     border: 1px dashed rgba(255, 51, 68, 0.1);
 }
 
-/* MODULO: GERADOR DE DESCULPAS */
+.hidden {
+    display: none;
+}
+
+/* ---- NOVO ESTILO: COMPARTILHAMENTO E EFEITOS ---- */
+.action-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.action-row button {
+    flex: 1;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 8px;
+    background-color: #12121a;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #fff;
+    box-shadow: 0 0 10px var(--accent-blue-glow);
+}
+
+.excuse-actions .share-buttons .btn-icon:hover {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+#mod-quote .share-buttons .btn-icon:hover {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+    box-shadow: 0 0 10px var(--accent-red-glow);
+}
+
+/* ---- NOVO ESTILO: PRESETS DA CALCULADORA ---- */
+.calc-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.preset-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-right: 4px;
+    text-transform: uppercase;
+}
+
+.btn-preset {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    background-color: #0c0c14;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-preset:hover {
+    background-color: var(--accent-orange);
+    border-color: var(--accent-orange);
+    color: #fff;
+    box-shadow: 0 0 10px var(--accent-orange-glow);
+}
+
+/* ---- NOVO ESTILO: CATEGORIAS DE DESCULPAS ---- */
+.excuse-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.btn-category {
+    width: auto;
+    padding: 8px 4px;
+    font-size: 0.72rem;
+    background-color: #08080c;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    text-align: center;
+    display: block;
+}
+
+.btn-category:hover {
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+}
+
+.btn-category.active {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #050508;
+    font-weight: 700;
+    box-shadow: 0 0 12px var(--accent-blue-glow);
+}
+
+/* ---- NOVO ESTILO: CEMITÉRIO DE METAS ---- */
+.todo-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    margin-right: 15px;
+}
+
+.todo-time {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.todo-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.todo-stats strong {
+    color: var(--accent-red);
+}
+
+.decay-out {
+    animation: decayOut 0.4s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+@keyframes decayOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+    50% {
+        opacity: 0.5;
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.85) translateY(15px);
+        filter: blur(4px);
+    }
+}
 .excuse-box {
     background-color: #050508;
     border: 1px solid var(--border);

@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <canvas id="bg-canvas"></canvas>
     <div class="container">
         <header>
             <h1>O EFEITO GYRO</h1>
@@ -37,7 +38,13 @@
                 <h2>💊 Pílula da Desilusão</h2>
                 <p class="desc">Sua dose diária de realidade sem anestesia.</p>
                 <p id="quote-display">Carregando sua dose de realidade...</p>
-                <button id="btn-quote">Me dê outra péssima notícia</button>
+                <div class="action-row">
+                    <button id="btn-quote">Me dê outra péssima notícia</button>
+                    <div class="share-buttons">
+                        <button id="btn-share-quote-tw" class="btn-icon" title="Compartilhar no Twitter">🐦</button>
+                        <button id="btn-share-quote-wa" class="btn-icon" title="Compartilhar no WhatsApp">💬</button>
+                    </div>
+                </div>
             </section>
 
             <!-- 3. CEMITÉRIO DE METAS -->
@@ -54,12 +61,24 @@
                 <div id="todo-message">
                     Insira uma meta para começar a procrastinação.
                 </div>
+                <div class="todo-stats" id="todo-stats">
+                    <span>Criadas: <strong id="stats-created">0</strong></span>
+                    <span>Concluídas: <strong id="stats-completed">0</strong></span>
+                    <span>Desistidas: <strong id="stats-deleted">0</strong></span>
+                </div>
             </section>
 
             <!-- 4. CALCULADORA DO ESFORÇO INÚTIL -->
             <section class="module" id="mod-calc">
                 <h2>🧮 Calculadora do Esforço Inútil</h2>
                 <p class="desc">Descubra quanto tempo precioso você jogou no lixo para nada.</p>
+                <div class="calc-presets">
+                    <span class="preset-label">Templates:</span>
+                    <button class="btn-preset" data-hours="3" data-days="7" data-years="5">📱 Rolar TikTok</button>
+                    <button class="btn-preset" data-hours="4" data-days="5" data-years="3">🎮 Jogar LoL</button>
+                    <button class="btn-preset" data-hours="1" data-days="5" data-years="2">💼 Reuniões</button>
+                    <button class="btn-preset" data-hours="2" data-days="7" data-years="8">📺 Streaming</button>
+                </div>
                 <div class="input-row">
                     <div class="input-group">
                         <label for="hours">Horas/Dia:</label>
@@ -82,6 +101,12 @@
             <section class="module" id="mod-excuse">
                 <h2>💼 Álibi do Fracasso</h2>
                 <p class="desc">Precisa justificar por que não fez absolutamente nada hoje? Use nosso gerador.</p>
+                <div class="excuse-categories" id="excuse-categories">
+                    <button class="btn-category active" data-category="corporativo">💼 Corp</button>
+                    <button class="btn-category" data-category="academico">🎓 Acadêmico</button>
+                    <button class="btn-category" data-category="saude">🏋️ Saúde</button>
+                    <button class="btn-category" data-category="relacionamento">💔 Amor</button>
+                </div>
                 <div class="excuse-box" id="excuse-display">
                     Selecione gerar álibi para mascarar sua incompetência.
                 </div>
@@ -90,6 +115,10 @@
                     <div class="tooltip" id="copy-tooltip">
                         <button id="btn-excuse-copy" class="btn-secondary">📋 Copiar</button>
                         <span class="tooltip-text">Copiado!</span>
+                    </div>
+                    <div class="share-buttons">
+                        <button id="btn-share-excuse-tw" class="btn-icon" title="Compartilhar no Twitter">🐦</button>
+                        <button id="btn-share-excuse-wa" class="btn-icon" title="Compartilhar no WhatsApp">💬</button>
                     </div>
                 </div>
             </section>
