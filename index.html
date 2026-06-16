@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Abismo - Efeito Gyro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>O EFEITO GYRO</h1>
+            <p>Para quê tentar se o resultado é sempre o mesmo? O universo não se importa com você.</p>
+        </header>
+
+        <main class="dashboard">
+            <!-- 1. O RELÓGIO DA INEVITABILIDADE -->
+            <section class="module" id="mod-clock">
+                <h2>⏱️ Relógio da Inevitabilidade</h2>
+                <p class="desc">Cada segundo é um passo em direção ao fim. O que você está fazendo com eles?</p>
+                <div class="clock-container">
+                    <div class="clock-display" id="clock-time">00:00:00</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="day-progress-bar"></div>
+                    </div>
+                    <div class="progress-label" id="day-progress-label">Dia: 0% desperdiçado</div>
+                    <div class="clock-quote" id="clock-quote-display">
+                        Calculando o tempo restante de mediocridade...
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PÍLULA DA DESILUSÃO -->
+            <section class="module" id="mod-quote">
+                <h2>💊 Pílula da Desilusão</h2>
+                <p class="desc">Sua dose diária de realidade sem anestesia.</p>
+                <p id="quote-display">Carregando sua dose de realidade...</p>
+                <button id="btn-quote">Me dê outra péssima notícia</button>
+            </section>
+
+            <!-- 3. CEMITÉRIO DE METAS -->
+            <section class="module" id="mod-todo">
+                <h2>🪦 Cemitério de Metas</h2>
+                <p class="desc">Adicione aqui suas ilusões diárias que você fingirá cumprir.</p>
+                <div class="todo-input-container">
+                    <input type="text" id="todo-input" placeholder="Ex: Ir à academia, estudar Rust..." maxlength="50">
+                    <button id="btn-todo-add">Adicionar</button>
+                </div>
+                <ul class="todo-list" id="todo-list">
+                    <!-- Gerado dinamicamente -->
+                </ul>
+                <div id="todo-message">
+                    Insira uma meta para começar a procrastinação.
+                </div>
+            </section>
+
+            <!-- 4. CALCULADORA DO ESFORÇO INÚTIL -->
+            <section class="module" id="mod-calc">
+                <h2>🧮 Calculadora do Esforço Inútil</h2>
+                <p class="desc">Descubra quanto tempo precioso você jogou no lixo para nada.</p>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="hours">Horas/Dia:</label>
+                        <input type="number" id="hours" min="1" max="24" placeholder="Ex: 8">
+                    </div>
+                    <div class="input-group">
+                        <label for="days">Dias/Semana:</label>
+                        <input type="number" id="days" min="1" max="7" placeholder="Ex: 5">
+                    </div>
+                    <div class="input-group">
+                        <label for="years">Anos:</label>
+                        <input type="number" id="years" min="1" max="100" placeholder="Ex: 2">
+                    </div>
+                </div>
+                <button id="btn-calc">Calcular Tempo Perdido</button>
+                <div id="calc-result" class="hidden"></div>
+            </section>
+
+            <!-- 5. ÁLIBI DO FRACASSO -->
+            <section class="module" id="mod-excuse">
+                <h2>💼 Álibi do Fracasso</h2>
+                <p class="desc">Precisa justificar por que não fez absolutamente nada hoje? Use nosso gerador.</p>
+                <div class="excuse-box" id="excuse-display">
+                    Selecione gerar álibi para mascarar sua incompetência.
+                </div>
+                <div class="excuse-actions">
+                    <button id="btn-excuse">Gerar Desculpa</button>
+                    <div class="tooltip" id="copy-tooltip">
+                        <button id="btn-excuse-copy" class="btn-secondary">📋 Copiar</button>
+                        <span class="tooltip-text">Copiado!</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>Desenvolvido com absoluto desgosto por <a href="https://github.com/MatheusSaturno/efeito-gyro" target="_blank" rel="noopener noreferrer">MatheusSaturno</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
